@@ -1,0 +1,10 @@
+langchain
+langchain-experimental
+streamlit
+langchain-groq
+psycopg2-binary
+langchain
+openai
+langchain-openai
+meraki
+pandasai
