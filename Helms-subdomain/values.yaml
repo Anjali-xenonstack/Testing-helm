@@ -1,0 +1,119 @@
+##______________ Common variables ______________
+teamSlug: "dashboard"
+domainName: lab.akirastack.team
+# namespace: "uat-stacklabs"
+# is_billing: "true"
+# Common generic service account for all services
+serviceAccountName: stacklabs
+database:
+  DB_HOST: postgresql-ha-pgpool.stacklabs.svc.cluster.local
+  DB_PORT: "5432"
+  DB_USER: stacklabs
+  DB_PASS: "AybFcSHA"
+  DB_NAME: "stacklabs_db"
+commonlabels:
+  app.kubernetes.io/contact: amit
+  app.kubernetes.io/env: prod
+  app.kubernetes.io/project: stacklabs
+  app.kubernetes.io/tier: backend
+  app.kubernetes.io/requested-by: na
+imagePullSecrets:
+  - name: regcred
+ingress:
+  className: nginx
+  annotations:
+    #  cert-manager.io/cluster-issuer: letsencrypt-production
+    # traefik.ingress.kubernetes.io/router.middlewares: uat-stacklabs-dashboard-sl-dash@kubernetescrd
+  deploymentPath: /api/deployments
+  # tls:
+  #   - hosts:
+  #       - lab.neuralcompany.team  # Replace with your actual domain
+  #     secretName: dashboard-tls  # Secret to store TLS certificate
+
+tolerations: []
+affinity: {}
+##_______________________________deployments______________________________________##
+
+deployments:
+  replicaCount: 1
+  image:
+    repository: dr.neuralcompany.team/stacklabs/stacklabs-deployments:feature-uat5631
+    tag: ""
+    pullPolicy: IfNotPresent
+  STACKLABS_API_PRIVATE_KEY: IHVlLeQiZknbmt
+  ### Software repo link 
+  SOFTWARES_ZIP: "https://git.neuralcompany.team/stacklabs/softwares/-/archive/release/1.0.1/softwares-release-1.0.1.zip"
+  #SOFTWARES_ZIP: "https://git.xenonstack.com/stacklabs/softwares/repository/archive.zip?ref=uat"
+  SOFTWARES_ZIP_PRIVATE_TOKEN: vktwEPzXPJtgEaEE2FgJ
+  ENVIRONMENT: production
+  IS_WORKSPACE: false
+  set_max_limit_resource: 10
+  # BILLING_ADDRESS: "https://stacklabs-auth.xenon.work/api/billing"
+  # AUTH_ADDRESS: "https://stacklabs-auth.xenon.work/api"
+  WORKSPACE_KUBE_CLIENT_CERT_DATA: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURLVENDQWhHZ0F3SUJBZ0lJYUcwOXhNVDM0UGt3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRFd01UZ3hOekkzTXpWYUZ3MHlOVEV3TVRneE56TXlNelphTUR3eApIekFkQmdOVkJBb1RGbXQxWW1WaFpHMDZZMngxYzNSbGNpMWhaRzFwYm5NeEdUQVhCZ05WQkFNVEVHdDFZbVZ5CmJtVjBaWE10WVdSdGFXNHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDcXdvOEYKRGlzNHlyUGVCMnhiMFYyVEdVZHlZNkcvd2JMbmEyMDArS055YkxHK29kUzRIdlYzcC9YZnUwUGpQdHNnVkQrWAp4Z0svZVZYV0dpc3MyQ0lGN0lqZEVlaFBhaHJaZHdPeUh1eHpLWU03MHdnQWwxQ29PQzFkcEFPc21tV0psREJnCitGd0syTldUZllmVC9ic1dlRzh6c2RQMmV5cytlZG0yeGY0aldacjJveEtZQ0ZzVHl1NHlMMitQOWpnT2JyRzUKdkxIODYrSllML3k3Tm5Za2VNeElqWFJiNUFmNGcvckkycUVkWUM1TUpOMkdlTlUrOFZ2ZXdxVGhoVC95d1RYcApnN2swRzhPOFlWZ0R4aEFaTUNIcHRYbThwSTFOUW0xbzl2QzkwVFI5L1c1RUlEa2FENlVqQldkR1VLU3J2L1RrClZzaUxmVVd6QnlzbEl2UkxBZ01CQUFHalZqQlVNQTRHQTFVZER3RUIvd1FFQXdJRm9EQVRCZ05WSFNVRUREQUsKQmdnckJnRUZCUWNEQWpBTUJnTlZIUk1CQWY4RUFqQUFNQjhHQTFVZEl3UVlNQmFBRkNOZWVmYXJtTHRZekxsVwpZNUFzaVhiMHZTOXJNQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUJLakRJT2RCSjljcUVtQTFyRzZ2MXZseG83CnhRVjZsei9NMzlzTzVDTEdpZ1NscUQ0UFhVU1QxdzBjM213Ulh5N0UvLzRvcS9ubGRFYnovejBza0VUZnhkQ2MKdmorbjd4b29jVHYwN2xidGZsdTdvNkZUOHdiVkEvelEzZnFObTE3dFJEbkY1OHZ1OGQ4cm5TaXp2S2c2MnJ2ZQpjTEYrZkJYYXJZWndRKy9MbXRLeFRLMnBOTkVVaURCTElRcEVWZ2NOTzVrWkQ0K0lHVlhnVEgzbjdwbEE3cExuCkdEejAvdUxKNU4yR0xTbjhwWGQvSDZaRmxQc2N2UStzMHN6YzVYTjVnYUUvWEt3K3NEOFBZY1NKZGk0ZVJmUXAKZ2NJTTY4L0hJMVQ0aEw3cFZ4K3cvN2VjaXdiaGEwRE1ScEdqb3I3N3JYYk94QTJoWjA2cTBLNjdhdytYCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  WORKSPACE_KUBE_CLIENT_KEY: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcXNLUEJRNHJPTXF6M2dkc1c5RmRreGxIY21PaHY4R3k1MnR0TlBpamNteXh2cUhVCnVCNzFkNmYxMzd0RDR6N2JJRlEvbDhZQ3YzbFYxaG9yTE5naUJleUkzUkhvVDJvYTJYY0RzaDdzY3ltRE85TUkKQUpkUXFEZ3RYYVFEckpwbGlaUXdZUGhjQ3RqVmszMkgwLzI3Rm5odk03SFQ5bnNyUG5uWnRzWCtJMW1hOXFNUwptQWhiRThydU1pOXZqL1k0RG02eHVieXgvT3ZpV0MvOHV6WjJKSGpNU0kxMFcrUUgrSVA2eU5xaEhXQXVUQ1RkCmhualZQdkZiM3NLazRZVS84c0UxNllPNU5CdkR2R0ZZQThZUUdUQWg2YlY1dktTTlRVSnRhUGJ3dmRFMGZmMXUKUkNBNUdnK2xJd1ZuUmxDa3E3LzA1RmJJaTMxRnN3Y3JKU0wwU3dJREFRQUJBb0lCQUVrNVN1a0pEV0c2RW0xSQpVNS8vNUpkNmhKZTV2NWVoOFJ5cGhWZnNzdklUU0JrTi9sREIvZExFdEh1dktzcGNuc3g3TkJYYU5EMTFRMmlmCktocDl5QUV3VC9RMGhLRGhTQWd1citnR3VMQWRnZ2Y2VTNrbGFkSG8zUk5Gak1uTUgzUmlsbWhPdC9GeTBBc0MKRG1mS2F4cVVwR0xQZzZ3elh2VFlmWktSem92TFltOThKc0ZNRWM3ODJvZG9EQmQ4QS94bUlQWGVGK2lxNVZJVgpGcVVNRXN2cTNGY0NZR2FPR0dKTmpNOG96bzdnZytTMlpTU1M5b1B1UUhnUER5RGhyRlN4YjEvUVRyQmRKcGpiClFnNlNsKzFpZTI4UjdXWHhVeU9xSWxaekNjL2JSL20xQkFFampHRXhuZlB5Q216TGdmSUsrWHVrQ0FyRUp3a2cKK1JuLzhMRUNnWUVBeW83OWdXYTJ2NDRBZGl2cm5Wei9TTWZWUVlCU210RkZYc01OKzdGWUtxS0ZmdlphU2hibgo2cXR4a3d1NG1mWnBPRTlHNmg4S29qZkpUdStjTEtvRjNwNGF2Uk1uVTczRlVjZjN4eVo1ditGTys1anBMWUttCmllUVY4eVk1bzRJZ1hkUmhGMUd3RUhXcTFGeUJtVzd5dU5TaG9tSUViVUs2NlFmSEEvTit2S2tDZ1lFQTE4L2MKaCtENTFvWDU1WUhoOUcrdnYveEJ4cDRMZmZIQTBtZnJYbUY4RDZqSERqc2VqbGhyYm1YZ2szbTFnc2N0NGh2dApYODQ0S1cvUTNIODRDakhUQXQwSFNSb2pLclcvMG9xRWZCc1V0SkVxWS9ad2FxY203b2hGUTV2QXFTRVUzcXQxCndVd1lyVTNQT3NhYkk0c2o5ZmxYem4yazJEaUQ5dnFPZHN6OTdkTUNnWUJWWEVEVW9WWnVEd2QreFM5N2wwODEKZXBFU0UyTzhQbWgvY0srWjI3aU43d05XNTdaUTlxb3hLS0txRnd4cVJYODk3WnF5MnZYK09vZ3BMYXlnM2QydgpYTzFqdElpa0w1clJ4ZlZUQlpIVkhMdk9KemhNcDN4TEs4VmNQRVdaOUNKenFDWnFUMUJrLzFGSVFOdVVyejYyClNWVDhPMVltUFRMTE5TM1hLbXZFVVFLQmdRQ20zbEJVdUQ0MkE2M3dLZmQrdTRVWFc0TzRnYWU5SUZySjFoU0cKQzdhVG5Sc2RBOVZpbHplcVN4ZlVzRDBLKzl1Y2c1K05mclNxUlkwbmtTN1JveWpYZy9RSU1DK1U3S2Qvc2g4eQpudlhwa0gxSWdkcjJmSHg3Mzk0K29vWGJ3SHFVbWRzWk5TKzNnUHlGSTkvOUlhOFNtRk91bERRTUE5YjE5MUtFCnhZaHFoUUtCZ0NaL1NUMW5JcktiUEZwRjljSTJDejd3UmtjR0h0alpnb2VlK2FPdFJ6c2I3VytHMkw3Nkw4NkcKVTFhSGxtT3VORitPeFlVZXBMWG5nNkxzd2pNNStOSExEYmJkUzRPNmdIdS8wM2Q5amFLV28wUW5hNm9iZmYzSgpVWFMxamJtNU10eFZTOENlSmNZTXRPZDYyMXhBVXVRTjNDcjU5UWdYcEVWQnZRWGRWdGc2Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+  certificateAuthorityData: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJS1d1cER5d0dST2t3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRFd01UZ3hOekkzTXpWYUZ3MHpOREV3TVRZeE56TXlNelZhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURQdk50K05TclZOdjAyQ3NnUFRjZU90OHJhZkVLY0Q0QWtkYWc4SU5ZSFlISVpPdTZkQzkwRlR1cGgKTmhuWCtCR1gwUU9Pb2VNeDAzQWRoZWpZdUUwSW1DMU4xUHFxRllHSCtBMzJOMmxoT1JpRUFydS8zQnh0ZmY4YwpkcTdXSldzRHlUN0k4T0FtU0pYV09MR01FSFZadFN0UDdiTmJseXAvQVdrMU9aZUJUQVYzU2ZralQreWd0TDFlCm80Y3dxUVFyWjlZY0FwOWdVam1TTkltZHdWTk9tWDlXcGdXclNqN3RQN3ZQQTdFZGtsMU82S3VQMEFZd1ExYzYKOTdNSnM2OGpBYjJVR3ZHVUFhNWFNQXpheCtkY09aUExraEJFUXBHRklUWTQ0UE1XbUNabVZZdzlENUpuMXdpMQpjTGxPMjdEajlhYzlZRTdoeWJZbG1XWXRKT3E5QWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJRalhubjJxNWk3V015NVZtT1FMSWwyOUwwdmF6QVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQUtlRWdsZ3ZsTQprcklMU1R3WDl6WEtoUHFJd1hMMkluN1E1TWdIRU52Wmp5dFBVeURnN3UxQ2x2NkdGQjlPRUh4QkYwdFBrTFJWCngwZHY1WnYrVmM3YTErVFBQZ3RrMUpjQnloNWd6K1FNNnJ3ZUpIbWVpUkJUY1hWalBobFRLM1ZGVUEyTFE5QkMKc1cvVFQ0eWNET3dHT2RnQmpiSG9iOTNGOXA1YnRWVHUzRjZ6WExHRGVvUGdxSGdLRUhtOTlQT2lLTnNrN1JnbApqcmxVUTMwK2hEbjBYTlhXRU85UHA2czBLMTE0SklrQ2dDMzFTVGFWOXU3bEpNdVhwMWlGK0pMVjNWYTRMcFRVCldIU3pmbTVxTFBuZzI4S29zR1RIUDZzSTdQZ1ZsSmFBaSt3azczMDFUeFJ6SElvOE0xM0YwQ3dVNU9sZ1JXQXAKcmlCUUtzTzBySXNLCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  #addresses
+  stacklabsBillingAddress: https://app.akirastack.com/api/billing
+  stacklabsAuthAddress: https://app.akirastack.com/api/auth
+  namespace: stacklabs
+  kubernetesServiceHost: https://4.247.160.26
+  kubernetesServicePort: 6443
+  useServiceAccount: false
+  service:
+    type: ClusterIP
+    port: 9302
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+##_______________________________sl-dashboard______________________________________##
+dash:
+  replicaCount: 1
+  image:
+    repository: dr.neuralcompany.team/stacklabs/sl-dash:feature-test-deploy11812
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3000
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+##_______________________________telemetry______________________________________##
+telemetry:
+  replicaCount: 1
+  image:
+    repository: dr.neuralcompany.team/stacklabs/stacklabs-telemetry:feature-uat5658
+    pullPolicy: IfNotPresent
+  env:
+    k8sHost:  https://4.247.160.26
+    k8sPort: 6443
+    useServiceAccount: false
+    environment: production
+    billingDbName: stacklabs_db # this should be the name of global service db name
+  resources:
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi

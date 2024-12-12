@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.teamSlug }}-sl-deployments
+  labels:
+    app.kubernetes.io/name: {{ .Values.teamSlug }}-sl-deployments
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.deployments.service.type }}
+  ports:
+    - port: {{ .Values.deployments.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ .Values.teamSlug }}-sl-deployments
+    app.kubernetes.io/instance: {{ .Release.Name }}
